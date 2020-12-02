@@ -122,8 +122,95 @@ function fn_test() {
     console.log(result);
 }
 
+/* Object methods and "this" */
+
+function object_methods() {
+    let arto = {
+        name: 'Arto Hellas',
+        age: 35,
+        education: 'PhD',
+        greet: function() {
+            console.log('Hello, my name is ' + this.name)
+        },
+    };
+
+    arto.greet();
+
+    arto = {
+        name: 'Arto Hellas',
+        age: 35,
+        education: 'PhD',
+        greet: function() {
+            console.log('hello, my name is ' + this.name)
+        },
+    };
+
+    arto.growOlder = function() {
+        this.age += 1;
+    }
+
+    console.log(arto.age); // 35
+    arto.growOlder();
+    console.log(arto.age); // 36
+
+    arto = {
+        name: 'Arto Hellas',
+        age: 35,
+        education: 'PhD',
+        greet: function() {
+            console.log('hello, my name is ' + this.name);
+        },
+        doAddition: function(a, b) {
+            console.log(a + b);
+        },
+    }
+
+    arto.doAddition(1, 4); // 5
+
+    let referenceToAddition = arto.doAddition;
+    referenceToAddition(10, 15); // 25
+
+    arto.greet(); // "hello, my name is Arto Hellas" gets printed
+
+    let referenceToGreet = arto.greet;
+    referenceToGreet(); // prints "hello, my name is undefined"
+
+    arto = {
+        name: 'Arto Hellas',
+        greet: function() {
+            console.log('hello, my name is ' + this.name);
+        }
+    };
+
+    setTimeout(arto.greet, 1000); // this here refers to the global object
+
+    setTimeout(arto.greet.bind(arto), 1000); // now this will refer to arto
+}
+
+/* Classes */
+
+function classes() {
+    class Person {
+        constructor(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        greet() {
+            console.log('hello, my name is ' + this.name);
+        }
+    }
+
+    let adam = new Person('Adam Ondra', 35);
+    adam.greet();
+
+    let janja = new Person('Janja Garnbret', 22);
+    janja.greet();
+}
+
 // variables();
 // arrays();
 // object();
-fn_test();
-
+// fn_test();
+// object_methods();
+classes();
