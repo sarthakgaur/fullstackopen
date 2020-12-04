@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 /* a.1 Component */
@@ -182,4 +182,87 @@ const App5_4 = () => {
   )
 }
 
-ReactDOM.render(<App5_4 />, document.getElementById('root'));
+/* Component state, event handlers */
+
+const Hello5 = ({ name, age }) => {
+  /* Component helper functions */
+
+  // const bornYear = () => {
+  //   const yearNow = new Date().getFullYear();
+  //   return yearNow - props.age;
+  // };
+
+  /* Destructuring */
+  // const name = props.name;
+  // const age = props.age;
+
+  // const { name, age } = props;
+  const bornYear = () => new Date().getFullYear() - age;
+
+  return (
+    <div>
+      <p>
+        Hello {name}, you are {age} years old
+      </p>
+      <p>So you were probably born in {bornYear()}</p>
+    </div>
+  );
+};
+
+const App6 = () => {
+  const name = 'Peter';
+  const age = 10;
+
+  return (
+    <div>
+      <h1>Greetings</h1>
+      <Hello5 name="Maya" age={26 + 10} />
+      <Hello5 name={name} age={age} />
+    </div>
+  );
+};
+
+/* Page re-rendering */
+
+const App7 = (props) => {
+  const {counter} = props;
+  return (
+    <div>{counter}</div>
+  );
+};
+
+let counter = 1;
+
+const refresh = () => {
+  ReactDOM.render(<App7 counter={counter}/>, document.getElementById('root'));
+}
+
+// refresh();
+// counter += 1;
+// refresh();
+// counter += 1;
+// refresh();
+
+// setInterval(() => {
+//   refresh();
+//   counter += 1
+// }, 1000);
+
+/* Stateful Component */
+
+// import useState
+
+const App8 = () => {
+  const [ counter, setCounter ] = useState(0);
+
+  setTimeout(
+    () => setCounter(counter + 1),
+    1000
+  );
+
+  return (
+    <div>{counter}</div>
+  );
+};
+
+ReactDOM.render(<App8 />, document.getElementById('root'));
