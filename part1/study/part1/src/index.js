@@ -265,4 +265,89 @@ const App8 = () => {
   );
 };
 
-ReactDOM.render(<App8 />, document.getElementById('root'));
+/* Event handling */
+
+const App9 = () => {
+  const [ counter, setCounter ] = useState(0);
+
+  // const handleClick = () => {
+  //   console.log('click');
+  // };
+
+  return (
+    <div>
+      <div>{counter}</div>
+      <button onClick={() => setCounter(counter + 1)}>plus</button>
+      <button onClick={() => setCounter(0)}>zero</button>
+    </div>
+  );
+};
+
+// ReactDOM.render(<App9 />, document.getElementById('root'));
+
+/* Event handler is a function */
+
+const App10 = () => {
+  const [ counter, setCounter ] = useState(0);
+
+  const increaseByOne = () => setCounter(counter + 1);
+  const setToZero = () => setCounter(0);
+
+  return (
+    <div>
+      <div>{counter}</div>
+      <button onClick={increaseByOne}>plus</button>
+      <button onClick={setToZero}>zero</button>
+    </div>
+  );
+};
+
+// ReactDOM.render(<App10 />, document.getElementById('root'));
+
+/* Passing state to child components */
+
+const Display = (props) => {
+  return (
+    <div>{props.counter}</div>
+  );
+};
+
+const App11 = () => {
+  const [ counter, setCounter ] = useState(0);
+
+  const increaseByOne = () => setCounter(counter + 1);
+  const decreaseByOne = () => setCounter(counter - 1);
+  const setToZero = () => setCounter(0);
+
+  return (
+    <div>
+      <Display2 counter={counter} />
+      <Button2 handleClick={increaseByOne} text='plus'></Button2>
+      <Button2 handleClick={setToZero} text='zero'></Button2>
+      <Button2 handleClick={decreaseByOne} text='minus'></Button2>
+    </div>
+  );
+
+  // return (
+  //   <div>
+  //     <Display counter={counter} />
+  //     <button onClick={increaseByOne}>plus</button>
+  //     <button onClick={setToZero}>zero</button>
+  //   </div>
+  // );
+};
+
+const Button = (props) => {
+  return (
+    <button onClick={props.handleClick}>{props.text}</button>
+  );
+};
+
+/* Refactoring the components */
+
+const Display2 = ({ counter }) => <div>{counter}</div>;
+const Button2 = ({ handleClick, text }) => (
+  <button onClick={handleClick}>{text}</button>
+);
+
+ReactDOM.render(<App11 />, document.getElementById('root'));
