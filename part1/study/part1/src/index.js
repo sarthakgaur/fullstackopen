@@ -225,7 +225,7 @@ const App6 = () => {
 /* Page re-rendering */
 
 const App7 = (props) => {
-  const {counter} = props;
+  const { counter } = props;
   return (
     <div>{counter}</div>
   );
@@ -234,7 +234,7 @@ const App7 = (props) => {
 let counter = 1;
 
 const refresh = () => {
-  ReactDOM.render(<App7 counter={counter}/>, document.getElementById('root'));
+  ReactDOM.render(<App7 counter={counter} />, document.getElementById('root'));
 }
 
 // refresh();
@@ -253,7 +253,7 @@ const refresh = () => {
 // import useState
 
 const App8 = () => {
-  const [ counter, setCounter ] = useState(0);
+  const [counter, setCounter] = useState(0);
 
   setTimeout(
     () => setCounter(counter + 1),
@@ -268,7 +268,7 @@ const App8 = () => {
 /* Event handling */
 
 const App9 = () => {
-  const [ counter, setCounter ] = useState(0);
+  const [counter, setCounter] = useState(0);
 
   // const handleClick = () => {
   //   console.log('click');
@@ -288,7 +288,7 @@ const App9 = () => {
 /* Event handler is a function */
 
 const App10 = () => {
-  const [ counter, setCounter ] = useState(0);
+  const [counter, setCounter] = useState(0);
 
   const increaseByOne = () => setCounter(counter + 1);
   const setToZero = () => setCounter(0);
@@ -313,7 +313,7 @@ const Display = (props) => {
 };
 
 const App11 = () => {
-  const [ counter, setCounter ] = useState(0);
+  const [counter, setCounter] = useState(0);
 
   const increaseByOne = () => setCounter(counter + 1);
   const decreaseByOne = () => setCounter(counter - 1);
@@ -503,31 +503,180 @@ const App15 = () => {
   );
 };
 
-ReactDOM.render(<App15 />, document.getElementById('root'));
+// ReactDOM.render(<App15 />, document.getElementById('root'));
 
 /* Rules of Hooks */
 
-const App16 = () => {
-  // These are ok
-  const [age, setAge] = useState(0);
-  const [name, setName] = useState('Juha Tauriainen');
+// const App16 = () => {
+//   // These are ok
+//   const [age, setAge] = useState(0);
+//   const [name, setName] = useState('Juha Tauriainen');
 
-  if (age > 10) {
-    // This does not work!
-    const [foobar, setFoobar] = useState(null);
-  }
+//   if (age > 10) {
+//     // This does not work!
+//     const [foobar, setFoobar] = useState(null);
+//   }
 
-  for (let i = 0; i < age; i++) {
-    // Also, this is not good.
-    const [rightWay, setRightWay] = useState(false);
-  }
+//   for (let i = 0; i < age; i++) {
+//     // Also, this is not good.
+//     const [rightWay, setRightWay] = useState(false);
+//   }
 
-  const notGood = () => {
-    // and this is also illegal
-    const [x ,setX] = useState(-1000);
-  }
+//   const notGood = () => {
+//     // and this is also illegal
+//     const [x ,setX] = useState(-1000);
+//   }
+
+//   return (
+//     <div></div>
+//   );
+// };
+
+/* Event Handling Revisited */
+
+const App17 = () => {
+  const [value, setValue] = useState(10);
+
+  // The following button click handlers will not work.
+
+  // (<button onClick="test"></button>);
+
+  // (<button onClick={value + 1}></button>);
+
+  // (<button onClick={value = 0}></button>);
+
+  // (<button onClick={console.log('clicked the button')}></button>);
+
+  // (<button onClick={setValue(0)}></button>);
+
+  // The following handler will work.
+
+  // (<button onClick={() => console.log('clicked the button')}></button>);
+
+  // (<button onClick={() => setValue(0)}></button>);
+
+  const handleClick = () => {
+    console.log('clicked the button');
+    setValue(0);
+  };
+
+  // return(
+  //   <div>
+  //     {value}
+  //     <button>reset to zero</button>
+  //   </div>
+  // );
 
   return (
-    <div></div>
+    <div>
+      {value}
+      <button onClick={handleClick}>button</button>
+    </div>
   );
 };
+
+// ReactDOM.render(<App17 />, document.getElementById('root'));
+
+/* Function that return a function */
+
+const App18 = () => {
+  const [value, setValue] = useState(10);
+
+  // const hello = (who) => {
+  //   const handler = () => {
+  //     console.log('hello', who);
+  //   }
+  //   return handler;
+  // };
+
+  // Removing first the constant
+
+  // const hello = (who) => {
+  //   return () => {
+  //     console.log('hello', who);
+  //   };
+  // };
+
+  // Removing the return keyword
+
+  // const hello = (who) =>
+  //   () => {
+  //     console.log('hello', who);
+  //   };
+
+  // Arrows on the same line
+
+  // const hello = (who) => () => {
+  //   console.log('hello', who);
+  // };
+
+  // const setToValue = (newValue) => () => {
+  //   setValue(newValue);
+  // };
+
+  const setToValue = (newValue) => {
+    setValue(newValue);
+  };
+
+  // return (
+  //   <div>
+  //     {value}
+  //     <button onClick={hello('world')}>button</button>
+  //     <button onClick={hello('react')}>button</button>
+  //     <button onClick={hello('function')}>button</button>
+  //   </div>
+  // );
+
+  // return (
+  //   <div>
+  //     {value}
+  //     <button onClick={setToValue(1000)}>thousand</button>
+  //     <button onClick={setToValue(0)}>reset</button>
+  //     <button onClick={setToValue(value + 1)}>increment</button>
+  //   </div>
+  // );
+
+  return (
+    <div>
+      {value}
+      <button onClick={() => setToValue(1000)}>thousand</button>
+      <button onClick={() => setToValue(0)}>reset</button>
+      <button onClick={() => setToValue(value + 1)}>increment</button>
+    </div>
+  );
+};
+
+// ReactDOM.render(<App18 />, document.getElementById('root'));
+
+/* Passing Event Handlers to Child Components */
+
+// This is the right place to define a component
+
+const Button3 = (props) => (
+  <button onClick={props.handleClick}>{props.text}</button>
+);
+
+const Display3 = props => <div>{props.value}</div>;
+
+const App19 = () => {
+  const [value, setValue] = useState(10);
+
+  const setToValue = (newValue) => {
+    setValue(newValue);
+  };
+
+  /* Do not Define Components Within Components */
+
+  // const Display = props => <div>{props.value}</div>;
+
+  return (
+    <div>
+      <Display3 value={value} />
+      <Button3 handleClick={() => setToValue(1000)} text="thousand" />
+      <Button3 handleClick={() => setToValue(0)} text="thousand" />
+      <Button3 handleClick={() => setToValue(value + 1)} text="thousand" />
+    </div>
+  );
+};
+
+ReactDOM.render(<App19 />, document.getElementById('root'));
