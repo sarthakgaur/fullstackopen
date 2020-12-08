@@ -15,12 +15,31 @@ const App = (props) => {
     setSelected(Math.floor(Math.random() * 6));
   };
 
+  const getMostVotedAnec = () => {
+    let maxVotes = 0;
+    let mostVotedAnecIndex = 0;
+    for (let i = 0; i < votes.length; i++) {
+      if (votes[i] > maxVotes) {
+        maxVotes = votes[i];
+        mostVotedAnecIndex = i;
+      }
+    }
+    return anecdotes[mostVotedAnecIndex];
+  }
+
   return (
     <div>
-      <p>{props.anecdotes[selected]}</p>
-      <p>Has {votes[selected]} votes.</p>
-      <button onClick={changeVote}>Vote</button>
-      <button onClick={changeState}>Next anecdote</button>
+      <div>
+        <h2>Anecdote of the day</h2>
+        <p>{props.anecdotes[selected]}</p>
+        <p>Has {votes[selected]} votes.</p>
+        <button onClick={changeVote}>Vote</button>
+        <button onClick={changeState}>Next anecdote</button>
+      </div>
+      <div>
+        <h2>Anecdote with most votes</h2>
+        <p>{getMostVotedAnec()}</p>
+      </div>
     </div>
   );
 };
