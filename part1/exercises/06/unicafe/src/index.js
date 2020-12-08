@@ -23,6 +23,11 @@ const App = () => {
   const incNeutralValue = () => { setNeutral(neutral + 1); };
   const incBadValue = () => { setBad(bad + 1); };
 
+  const all = good + neutral + bad;
+  const average = all / 3;
+  const positive = (good / all) * 100;
+  const positiveStr = positive + " %";
+
   return (
     <div>
       <h1>Give Feedback</h1>
@@ -33,6 +38,9 @@ const App = () => {
       <Display text={'Good'} value={good} />
       <Display text={'Neutral'} value={neutral} />
       <Display text={'Bad'} value={bad} />
+      <Display text={'All'} value={all} />
+      <Display text={'Average'} value={average} />
+      <Display text={'Positive'} value={positiveStr} />
     </div>
   );
 };
