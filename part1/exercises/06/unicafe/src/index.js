@@ -19,6 +19,15 @@ const Statistics = (props) => {
   const positive = (props.good / all) * 100;
   const positiveStr = positive + " %";
 
+  if (all === 0) {
+    return (
+      <div>
+        <h2>Statistics</h2>
+        <p>No feedback given</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2>Statistics</h2>
