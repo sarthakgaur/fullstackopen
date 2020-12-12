@@ -7,6 +7,8 @@ const Header = ({ course }) => {
   );
 };
 
+// Number of exercises is calculated using the reduce method.
+
 const Total = ({ parts }) => {
   return (
     <p>
