@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import Filter from './components/Filter';
+import PersonFrom from './components/PersonFrom';
+import Persons from './components/Persons';
 
 const App = () => {
   let data = [
@@ -43,33 +46,22 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
-  const displayPersons = () => {
-    return persons.filter(person => person.name.toLowerCase().includes(filter))
-      .map(person => <p key={person.name}>{person.name} {person.number}</p>);
-  };
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with: <input value={filter} onChange={handleFilterChange} required />
-      </div>
+      <Filter filter={filter} handleFilterChange={handleFilterChange} />
 
       <h2>Add a new</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} required />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} required />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonFrom
+        handleSubmit={handleSubmit}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
 
       <h2>Numbers</h2>
-      {displayPersons()}
+      <Persons filter={filter} persons={persons} />
     </div>
   );
 };
