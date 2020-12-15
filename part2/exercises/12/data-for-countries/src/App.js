@@ -1,6 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const CountryListItem = ({ country }) => {
+  const [showInfo, setShowInfo] = useState(false);
+
+  const handleShowButton = () => { setShowInfo(!showInfo); };
+
+  if (!showInfo) {
+    return (
+      <div>
+        { country.name }
+        <button onClick={handleShowButton}>{showInfo ? "Hide" : "Show"}</button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      { country.name}
+      <button onClick={handleShowButton}>{showInfo ? "Hide" : "Show"}</button>
+      <Country country={country} />
+    </div>
+  );
+};
+
 const Country = ({ country }) => {
   return (
     <div>
@@ -37,11 +60,13 @@ const App = () => {
     if (result.length > 10) {
       return <p>Too many matches, specify another filter.</p>;
     } else if (result.length > 1) {
-      return result.map(country => <p key={country.name}>{country.name}</p>);
+      return result.map(country => {
+        return <CountryListItem key={country.name} country={country} />;
+      });
     } else if (result.length === 1) {
       return <Country country={result[0]} />;
     }
-  }
+  };
 
   return (
     <div>
