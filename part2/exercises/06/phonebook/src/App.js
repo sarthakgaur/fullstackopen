@@ -18,18 +18,30 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const personObj = {
+    let person = {
       name: newName,
       number: newNumber,
     };
 
-    // Enter name only if it doesn't already exist
+    // If the name exists perform an update after asking for confirmation
 
-    if (persons.find(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`);
+    let message = "is already added to phonebook, replace the old number with a new one?";
+    let previousRecord = persons.find(person => person.name === newName);
+
+    if (previousRecord) {
+      if (window.confirm(`${person.name} ${message}`)) {
+        person = { ...previousRecord, ...person };
+        personService
+          .update(person.id, person)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => 
+              person.id === previousRecord.id ? returnedPerson : person
+            ));
+          });
+      }
     } else {
       personService
-        .create(personObj)
+        .create(person)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
         });
