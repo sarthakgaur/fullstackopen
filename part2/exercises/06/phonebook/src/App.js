@@ -50,6 +50,16 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
+  const handleDeletion = (personToRemove) => {
+    if (window.confirm(`Delete ${personToRemove.name}?`)) {
+      personService
+        .remove(personToRemove.id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== personToRemove.id));
+        });
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -65,7 +75,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons filter={filter} persons={persons} />
+      <Persons filter={filter} persons={persons} handleDeletion={handleDeletion} />
     </div>
   );
 };
