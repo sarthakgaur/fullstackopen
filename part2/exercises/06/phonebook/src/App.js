@@ -2,19 +2,27 @@ import React, { useState, useEffect } from 'react';
 import Filter from './components/Filter';
 import PersonFrom from './components/PersonFrom';
 import Persons from './components/Persons';
+import Notification from './components/Notification';
 import personService from './services/persons';
+import './index.css';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setfilter] = useState('');
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     personService
       .getAll()
       .then(initialPersons => { setPersons(initialPersons) });
   }, []);
+
+  const displayNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => { setNotification(null); }, 5000);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,9 +42,10 @@ const App = () => {
         personService
           .update(person.id, person)
           .then(returnedPerson => {
-            setPersons(persons.map(person => 
+            setPersons(persons.map(person =>
               person.id === previousRecord.id ? returnedPerson : person
             ));
+            displayNotification(`Updated ${returnedPerson.name}`);
           });
       }
     } else {
@@ -44,6 +53,7 @@ const App = () => {
         .create(person)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
+          displayNotification(`Added ${returnedPerson.name}`);
         });
     }
     setNewName('');
@@ -68,12 +78,15 @@ const App = () => {
         .remove(personToRemove.id)
         .then(() => {
           setPersons(persons.filter(person => person.id !== personToRemove.id));
+          displayNotification(`Deleted ${personToRemove.name}`);
         });
     }
   };
 
   return (
     <div>
+      <Notification message={notification} />
+
       <h2>Phonebook</h2>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
 
