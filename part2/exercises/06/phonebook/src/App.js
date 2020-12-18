@@ -19,8 +19,8 @@ const App = () => {
       .then(initialPersons => { setPersons(initialPersons) });
   }, []);
 
-  const displayNotification = (message) => {
-    setNotification(message);
+  const displayNotification = (message, isFailure) => {
+    setNotification({ message, isFailure });
     setTimeout(() => { setNotification(null); }, 5000);
   };
 
@@ -45,7 +45,11 @@ const App = () => {
             setPersons(persons.map(person =>
               person.id === previousRecord.id ? returnedPerson : person
             ));
-            displayNotification(`Updated ${returnedPerson.name}`);
+            displayNotification(`Updated ${returnedPerson.name}`, false);
+          })
+          .catch(error => {
+            message = `Information of ${person.name} has already been removed from server`;
+            displayNotification(message, true);
           });
       }
     } else {
@@ -53,7 +57,7 @@ const App = () => {
         .create(person)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
-          displayNotification(`Added ${returnedPerson.name}`);
+          displayNotification(`Added ${returnedPerson.name}`, false);
         });
     }
     setNewName('');
@@ -74,18 +78,23 @@ const App = () => {
 
   const handleDeletion = (personToRemove) => {
     if (window.confirm(`Delete ${personToRemove.name}?`)) {
+      let message;
       personService
         .remove(personToRemove.id)
         .then(() => {
           setPersons(persons.filter(person => person.id !== personToRemove.id));
-          displayNotification(`Deleted ${personToRemove.name}`);
+          displayNotification(`Deleted ${personToRemove.name}`, false);
+        })
+        .catch(error => {
+          message = `Information of ${personToRemove.name} has already been removed from server`;
+          displayNotification(message, true);
         });
     }
   };
 
   return (
     <div>
-      <Notification message={notification} />
+      <Notification notification={notification} />
 
       <h2>Phonebook</h2>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
